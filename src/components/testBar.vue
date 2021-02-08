@@ -8,7 +8,7 @@
 
 <script>
 export default {
-props:['titulo','nPregunta','tPreguntas'],
+props:['titulo'],
 methods:{
 
 },
