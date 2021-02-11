@@ -73,7 +73,6 @@ export default {
   },
   mounted() {
     this.watchRoute();
-    console.log(this.$store);
   },
 };
 </script>

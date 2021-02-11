@@ -4,61 +4,31 @@
       color="primary"
       dark
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
+      <h1>Autoescuela</h1>
       <v-spacer></v-spacer>
     
       <v-btn
-      v-if="!user"
-      @click="changeUser"
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+      v-if="loggedUser  == ''"
+        to='/login'
         target="_blank"
         text
       ><v-icon>fas fa-user</v-icon>
         <span class="ml-2">Iniciar sesión</span>
         
       </v-btn>
-      <v-btn
-      v-if="user"
-      @click="changeUser"
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        
-      ><v-icon>fas fa-user</v-icon>
-        
-      </v-btn>
+   
     </v-app-bar>
 </template>
 
 <script>
 export default {
   methods:{
-    changeUser(){
-      this.$store.commit('loguearUsuario')
-    }
+   
   },
 computed:{
-  user(){
-    return this.$store.getters.getUserName
-  }
+  loggedUser(){
+      return this.$store.getters.getUserName
+    }
 }
 }
 </script>

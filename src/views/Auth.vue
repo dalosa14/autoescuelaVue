@@ -7,7 +7,7 @@
           min-width="350px"
           max-width="400px"
           min-height="300px"
-          max-height="400px"
+          max-height="700px"
         >
           <login v-if="this.mode == 'login'"></login>
           <register v-if="this.mode == 'register'"></register>
@@ -19,7 +19,6 @@
 <script>
 import login from "../components/login";
 import register from "../components/register";
-import getCsrfToken from '../apis/getCsrfToken'
 export default {
   components: {
     register,
@@ -27,32 +26,29 @@ export default {
   },
   data() {
     return {
-      
-      mode:''
+      mode: "",
     };
   },
   methods: {
-    watchRoute(){
-      if (this.path == '/register') {
-          return this.mode = 'register'
-      }return this.mode = 'login'
+    watchRoute() {
+      if (this.path == "/register") {
+        return (this.mode = "register");
+      }
+      return (this.mode = "login");
     },
-    
   },
-  computed:{
-    path(){
-      return this.$route.path
-    }
+  computed: {
+    path() {
+      return this.$route.path;
+    },
   },
-  watch:{
-    path(){
-      this.watchRoute()
-    }
+  watch: {
+    path() {
+      this.watchRoute();
+    },
   },
   mounted() {
-          this.watchRoute()
-          console.log(getCsrfToken)
-
+    this.watchRoute();
   },
 };
 </script>

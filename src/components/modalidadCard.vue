@@ -1,10 +1,11 @@
 <template>
-<v-hover v-slot="{ hover }">
+<v-hover v-slot="{ hover }" v-if=" modalidad.active">
   <v-card
+  @click="goTestsModalidad()"
   class="ma-3"
     :elevation="hover ? 12 : 2"
 
-    :to="`${modalidad.url}`"
+    
     :color="$vuetify.theme.dark ? 'grey darken-3' : 'grey lighten-4'"
     min-height="100px"
     min-width="100px"
@@ -16,15 +17,15 @@
       min-width="100px"
       max-height="300px"
       max-width="300px"
-      :src="modalidad.imagen"
+      :src="modalidad.img"
     ></v-img>
     <v-row class="d-flex pa-1">
 <v-col class="d-flex justify-center pa-0 mt-5 ">
-      <h2 class="d-flex  text-uppercase ">{{ modalidad.nombre }}</h2>
+      <h2 class="d-flex  text-uppercase ">{{ modalidad.name }}</h2>
     </v-col>
     
  <v-card-text class="text-center ">
-{{modalidad.desc}}    </v-card-text>
+{{modalidad.description}}    </v-card-text>
 </v-row>
    
   </v-card>
@@ -34,6 +35,11 @@
 <script>
 export default {
   props: ["modalidad"],
+  methods:{
+    goTestsModalidad(){
+      this.$store.dispatch('selectModalidad',this.modalidad.code)
+    }
+  }
 };
 </script>
 

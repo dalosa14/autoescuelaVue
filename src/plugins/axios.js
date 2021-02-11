@@ -18,7 +18,11 @@ const _axios = axios.create(config);
 
 _axios.interceptors.request.use(
   function(config) {
-    // Do something before request is sent
+    let token =Vue.$cookies.get('Authorization')
+    if (token) {
+      config.headers.Authorization =  token;
+    }
+    
     return config;
   },
   function(error) {

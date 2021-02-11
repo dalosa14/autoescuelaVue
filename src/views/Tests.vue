@@ -51,7 +51,6 @@ components:{
   },
   mounted() {
           this.watchRoute()
-          console.log(this.$store)
 
   },
 };

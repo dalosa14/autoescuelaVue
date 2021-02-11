@@ -10,10 +10,10 @@
 
 <script>
 import appBar from "./components/appBar";
-
+const {mixins} = require('./mixins/mixins')
 export default {
   name: "App",
-
+  mixins:[mixins],
   components: {
     appBar,
   },
@@ -23,6 +23,9 @@ export default {
     };
   },
   methods: {
+    
+    
+    
     // por si tengo que ocultar la barra para alguna ruta en concreto, este código repetido en vue 3 lo haría con el composition api para ahorrarme la repetición y no uso mixins porque no me gustan.
     watchRoute() {
       if (this.path != "/ejemplo") {
@@ -42,6 +45,7 @@ export default {
     },
   },
   mounted() {
+    
     this.watchRoute();
   },
 };

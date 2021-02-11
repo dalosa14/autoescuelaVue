@@ -2,7 +2,7 @@
   <v-container fluid fill-height>
     <v-row wrap>
       <v-col  cols="12" class="d-flex justify-center align-center flex-wrap">
-        <permisoCard v-for="(permiso,index) in permisos" :key="index" :permiso="{nombre:permiso.nombre ,id:index}"></permisoCard>
+        <permisoCard v-for="(permiso,index) in permisos" :key="index" :permiso="permiso"></permisoCard>
         
       </v-col>
     </v-row>
@@ -16,13 +16,7 @@ components:{
 },
   data() {
     return {
-      permisos:[
-        {nombre:'permiso a'},
-       { nombre:'permiso b'},
-       { nombre:'permiso c'},
-        {nombre:'permiso d'},
-        {nombre:'permiso e'},
-      ],
+      
       mode:''
     };
   },
@@ -32,12 +26,19 @@ components:{
           return this.mode = 'register'
       }return this.mode = 'login'
     },
+    getPermisos(){
+      this.$store.dispatch('getPermisos')
+    }
     
   },
   computed:{
     path(){
       return this.$route.path
-    }
+    },
+    
+    permisos(){
+      return this.$store.getters.getPermisos
+    },
   },
   watch:{
     path(){
@@ -46,7 +47,7 @@ components:{
   },
   mounted() {
           this.watchRoute()
-          console.log(this.$store)
+          this.getPermisos()
 
   },
 };
