@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import router from "../router/index";
-import * as user from './modules/usuarios'
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
@@ -20,6 +19,7 @@ export default new Vuex.Store({
       actualPregunta: 0,
       preguntas: [],
     },
+    testsPermisoModalidadActual:[],
     modalidadEscogida: 0,
   },
   mutations: {
@@ -45,7 +45,21 @@ export default new Vuex.Store({
         permisos.forEach((permiso) => {
           permisosArray.push(permiso);
         });
-        Vue.set(state.logguedUser, "permisos", [...permisosArray]);
+        Vue.set(state.logguedUser.permisos, "permisos", [...permisosArray]);
+
+        return { success: true, msg: "permisos agregados ", errorCode: 0 };
+      } catch (error) {
+        console.log(error);
+        return { success: false, msg: "error ", errorCode: 5 };
+      }
+    },
+    setTests(state, tests) {
+      try {
+        let testsArray = [];
+        tests.forEach((test) => {
+          testsArray.push(test);
+        });
+        Vue.set(state, "testsPermisoModalidadActual", [...testsArray]);
 
         return { success: true, msg: "permisos agregados ", errorCode: 0 };
       } catch (error) {
@@ -110,6 +124,9 @@ export default new Vuex.Store({
     },
   },
   getters: {
+    getTests(state){
+return state.testsPermisoModalidadActual
+    },
     getModalidadEscogida(state) {
       return state.logguedUser.modalidadEscogida;
     },
@@ -228,6 +245,21 @@ export default new Vuex.Store({
         return { success: false, msg: "error ", errorCode: 5 };
       }
     },
+    async getTests(context) {
+      try {
+        let response = await Vue.axios.get("/api/getTests");
+        if (!response.data[0].name)
+          return {
+            success: false,
+            msg: "error al traer las modalidades",
+            errorCode: 9,
+          };
+
+        await context.commit("setTests", response.data);
+      } catch (error) {
+        return { success: false, msg: "error ", errorCode: 5 };
+      }
+    },
   },
-  modules: {user},
+  modules: {},
 });
