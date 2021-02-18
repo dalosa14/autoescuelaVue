@@ -4,7 +4,7 @@
       <h1>logueo</h1>
 
       <v-col cols="11">
-        <ValidationProvider rules="required|email" name="Nombre" v-slot="v">
+        <ValidationProvider rules="required|email" name="email" v-slot="v">
           <v-text-field
             label="E-mail"
             name="email"
@@ -15,7 +15,7 @@
         </ValidationProvider>
       </v-col>
       <v-col cols="11">
-        <ValidationProvider rules="required|min:6" name="pass1" v-slot="v">
+        <ValidationProvider rules="required" name="pass" v-slot="v">
           <v-text-field
             label="Contraseña"
             name="password"
@@ -56,7 +56,7 @@
 import { ValidationProvider } from "vee-validate";
 import { ValidationObserver } from "vee-validate";
 import { extend } from "vee-validate";
-import { required, email, min } from "vee-validate/dist/rules";
+import { required, email } from "vee-validate/dist/rules";
 extend("required", {
   ...required,
   message: `La casilla es requerida`,
@@ -66,10 +66,6 @@ extend("email", {
   message: `Debe de ser un email valido`,
 });
 
-extend("min", {
-  ...min,
-  message: `La contraseña debe de ser de 6 o más caracteres`,
-});
 export default {
   components: {
     ValidationProvider,
