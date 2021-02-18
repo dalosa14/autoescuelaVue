@@ -26,8 +26,8 @@ components:{
           return this.mode = 'register'
       }return this.mode = 'login'
     },
-    getPermisos(){
-      this.$store.dispatch('getPermisos')
+    async getPermisos(){
+      await this.$store.dispatch('getPermisos')
     }
     
   },

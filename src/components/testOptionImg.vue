@@ -5,13 +5,13 @@
       :class="{ 'on-hover': hover, elegida: esElegida }"
     >
       <v-col cols="2" class="d-flex justify-start">
-        <div :class="clase">{{ opcion.id }}</div>
+        <div :class="clase">{{ opcion.letra }}</div>
       </v-col>
       <v-col
         cols="8"
         class="d-flex justify-start align-center ma-0 offset-md-2"
       >
-        <p>{{ opcion.opcion }}</p>
+        <p>{{ opcion.texto }}</p>
       </v-col>
     </v-row>
   </v-hover>
@@ -27,44 +27,29 @@ export default {
     };
   },
   methods: {
-    //comprueba si la respuesta es la correcta y le cambia la clase
-    elegida() {
-      if (this.preguntaContestada ) {
-        if (this.opcion.correcto ) {
-          this.clase = "numberCircleAcierto";
-        }
-        if (!this.opcion.correcto) {
-          this.clase = "numberCircleFallo";
-        }
-      } else {
-          this.clase = 'numberCircle'
-      }
-    },
-    esContestada() {
-      this.elegida();
-      if (this.respuesta == this.opcion.id) {
-        this.esElegida = true;
-      } else {
-        this.esElegida = false;
-      }
-    },
+    //resultados
+    resultados(){
+      if (this.respuesta != '' && this.opcion.correcto ) this.clase = 'numberCircleAcierto'
+      if (this.respuesta != '' && !this.opcion.correcto ) this.clase = 'numberCircleFallo'  
+      if(this.respuesta == this.opcion.id) this.esElegida = true
+      if(this.respuesta == this.opcion.id && !this.opcion.correcto) this.$store.commit('addFallo')
+      if(this.respuesta == this.opcion.id && this.opcion.correcto) this.$store.commit('addAcierto')
+    }
+    
   },
   computed: {
-    preguntaContestada() {
-      return this.$store.getters.getPreguntaActual.contestada;
-    },
+    
     respuesta() {
-      return this.$store.getters.getPreguntaActual.respuesta;
+      return this.$store.getters.getActualPregunta.respuesta;
     },
   },
   watch: {
-    preguntaContestada() {
-      this.esContestada();
+    respuesta() {
+      this.resultados();
     },
   },
   mounted() {
-    this.esContestada();
-    this.elegida()
+    this.resultados();
   },
 };
 </script>

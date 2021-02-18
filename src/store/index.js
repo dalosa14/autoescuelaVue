@@ -13,9 +13,9 @@ export default new Vuex.Store({
       updated_at: "",
     },
     test: {
-      id: "",
-      name: "",
-      totalPreguntas: 0,
+      
+      aciertos:0,
+      fallos:0,
       actualPregunta: 0,
       preguntas: [],
     },
@@ -23,6 +23,18 @@ export default new Vuex.Store({
     modalidadEscogida: 0,
   },
   mutations: {
+    addAcierto(state){
+      state.test.aciertos += 1
+    },
+    addFallo(state){
+      state.test.fallos += 1
+    },
+    resetTest(state){
+      state.test.aciertos = 0
+      state.test.fallos = 0
+      state.test.actualPregunta = 0
+
+    },
     setloguedUser(state, user) {
       try {
         state.logguedUser = user;
@@ -45,7 +57,7 @@ export default new Vuex.Store({
         permisos.forEach((permiso) => {
           permisosArray.push(permiso);
         });
-        Vue.set(state.logguedUser.permisos, "permisos", [...permisosArray]);
+        Vue.set(state.logguedUser, "permisos", [...permisosArray]);
 
         return { success: true, msg: "permisos agregados ", errorCode: 0 };
       } catch (error) {
@@ -62,6 +74,24 @@ export default new Vuex.Store({
         Vue.set(state, "testsPermisoModalidadActual", [...testsArray]);
 
         return { success: true, msg: "permisos agregados ", errorCode: 0 };
+      } catch (error) {
+        console.log(error);
+        return { success: false, msg: "error ", errorCode: 5 };
+      }
+    },
+    setPreguntas(state, preguntas) {
+      try {
+        let letras=['A','B','C','D']
+        preguntas.forEach((pregunta)=> {
+          pregunta.opciones.forEach((opcion,index)=>{
+            opcion.letra = letras[index]
+
+          })
+          pregunta.respuesta = ''
+        })
+        Vue.set(state.test, "preguntas", [...preguntas]);
+
+        return { success: true, msg: "preguntas agregadas ", errorCode: 0 };
       } catch (error) {
         console.log(error);
         return { success: false, msg: "error ", errorCode: 5 };
@@ -99,31 +129,27 @@ export default new Vuex.Store({
         respuesta: "",
       });
     },
-    addRespuestaToPregunta(state, respuesta) {
-      state.test.respuestasPreguntas.push({
-        idPregunta: respuesta.idPregunta,
-      });
-    },
+    
     setRespuestaToPreguntaActual(state, respuesta) {
-      let indexPregunta = state.test.preguntas.findIndex(
-        (pregunta) => pregunta.id == state.test.actualPregunta
-      );
-      state.test.preguntas[indexPregunta].respuesta = respuesta;
+      
+
+      state.test.preguntas[ state.test.actualPregunta].respuesta = respuesta;
     },
-    setPreguntaToContestada(state) {
-      let indexPregunta = state.test.preguntas.findIndex(
-        (pregunta) => pregunta.id == state.test.actualPregunta
-      );
-      state.test.preguntas[indexPregunta].contestada = true;
-    },
+   
 
     nextPreguntaActual(state) {
-      state.test.actualPregunta == state.test.totalPreguntas
-        ? state.test.actualPregunta
-        : (state.test.actualPregunta += 1);
+      
+        if(state.test.actualPregunta +1 == state.test.preguntas.length) return router.push("/resultadoTest")
+        state.test.actualPregunta += 1
     },
   },
   getters: {
+    getAciertos(state){
+      return state.test.aciertos 
+    },
+    getFallos(state){
+      return state.test.fallos 
+    },
     getTests(state){
 return state.testsPermisoModalidadActual
     },
@@ -144,25 +170,21 @@ return state.testsPermisoModalidadActual
       return state.logguedUser.permisos[modalidad].modalidades;
     },
     getTotalPreguntas(state) {
-      return state.test.totalPreguntas;
+      return state.test.preguntas.length;
     },
     getActualPregunta(state) {
+      return state.test.preguntas[state.test.actualPregunta];
+    },
+    getActualPreguntaIndex(state) {
       return state.test.actualPregunta;
     },
     getPreguntas(state) {
       return state.test.preguntas;
     },
-    getPreguntaActual(state) {
-      return state.test.preguntas.find(
-        (pregunta) => pregunta.id == state.test.actualPregunta
-      );
-    },
+    
   },
   actions: {
-    selectOpcionInPregunta(context, respuesta) {
-      context.commit("setRespuestaToPreguntaActual", respuesta);
-      context.commit("setPreguntaToContestada");
-    },
+   
     async getLoggedUser(context) {
       try {
         let response = await Vue.axios.get("/api/user");
@@ -188,6 +210,7 @@ return state.testsPermisoModalidadActual
         await context.dispatch("getLoggedUser");
 
         router.push("/seleccionPermiso");
+        return { success: true, msg: "logueado correctamente", errorCode: 0 };
       } catch (error) {
         return { success: false, msg: "error ", errorCode: 5 };
       }
@@ -256,6 +279,29 @@ return state.testsPermisoModalidadActual
           };
 
         await context.commit("setTests", response.data);
+      } catch (error) {
+        return { success: false, msg: "error ", errorCode: 5 };
+      }
+    },
+    async resetTest(context) {
+      try {
+        context.commit('resetTest')
+      } catch (error) {
+        return { success: false, msg: "error ", errorCode: 5 };
+      }
+    },
+    async getPreguntas(context,idTest) {
+      try {
+        let response = await Vue.axios.get("/api/getPreguntasTest/"+idTest);
+        if (!response.data[0].name)
+          return {
+            success: false,
+            msg: "error al traer las preguntas",
+            errorCode: 9,
+          };
+          
+
+        await context.commit("setPreguntas", response.data);
       } catch (error) {
         return { success: false, msg: "error ", errorCode: 5 };
       }

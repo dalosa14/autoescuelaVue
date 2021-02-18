@@ -1,5 +1,5 @@
 <template>
-<v-hover v-slot="{ hover }" v-if=" modalidad.active">
+<v-hover v-slot="{ hover }" >
   <v-card
   @click="goTestsModalidad()"
   class="ma-3"

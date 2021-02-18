@@ -1,26 +1,18 @@
 <template>
   <v-card >
       <v-card-title>
-        {{titulo}} - {{getActualPregunta}}/{{getTotalPreguntas}}
+        {{titulo}} - {{numeroPreguntaActual}}/{{numeroPreguntasTotales}}
       </v-card-title>
   </v-card>
 </template>
 
 <script>
 export default {
-props:['titulo'],
+props:['titulo','numeroPreguntasTotales','numeroPreguntaActual'],
 methods:{
 
 },
-computed:{
-    getTotalPreguntas(){
-        return this.$store.getters.getTotalPreguntas
-    },
-    getActualPregunta(){
-        return this.$store.getters.getActualPregunta
-    },
 
-}
 }
 </script>
 
