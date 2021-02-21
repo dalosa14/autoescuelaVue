@@ -1,5 +1,10 @@
 <template>
   <v-container fluid fill-height>
+    <v-row>
+      <v-col cols="12" class="d-flex justify-center" >
+        <h1>Escoge un permiso de conducir</h1>
+      </v-col>
+    </v-row>
     <v-row wrap>
       <v-col  cols="12" class="d-flex justify-center align-center flex-wrap">
         <permisoCard v-for="(permiso,index) in permisos" :key="index" :permiso="permiso"></permisoCard>

@@ -1,8 +1,23 @@
 <template>
   <v-container fluid fill-height class="d-flex align-start">
+    <v-row>
+      <v-col cols="12">
     <testLayout v-if="loaded" :pregunta="preguntaActual"></testLayout>
-    <v-btn @click="nextPregunta()" color="success">next</v-btn>
-    <!-- {{preguntass}} -->
+
+      </v-col>
+      <v-row>
+        <v-col cols="12">
+            <v-btn @click="backPreguntaActual()" color="success">Pregunta anterior </v-btn>
+
+      </v-col>
+      <v-col cols="12">
+            <v-btn @click="nextPregunta()" v-if="actualPreguntaIndex+1 != totalPreguntas" color="success">Pregunta siguiente</v-btn>
+            <v-btn @click="nextPregunta()" v-else color="success">Terminar test</v-btn>
+
+      </v-col>
+
+      </v-row>
+          </v-row>
   </v-container>
 </template>
 <script>
@@ -22,6 +37,9 @@ export default {
     nextPregunta(){
       this.$store.commit('nextPreguntaActual')
     },
+    backPreguntaActual(){
+      this.$store.commit('backPreguntaActual')
+    },
     async getPreguntas(){
      await this.$store.dispatch('getPreguntas',this.$route.params.id)
      this.loaded = true;
@@ -31,6 +49,14 @@ export default {
   computed: {
    preguntaActual(){
           return this.$store.getters.getActualPregunta
+
+    },
+   totalPreguntas(){
+          return this.$store.getters.getTotalPreguntas
+
+    },
+   actualPreguntaIndex(){
+          return this.$store.getters.getActualPreguntaIndex
 
     },
    

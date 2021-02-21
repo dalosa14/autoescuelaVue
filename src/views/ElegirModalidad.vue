@@ -1,5 +1,10 @@
 <template>
   <v-container fluid fill-height>
+    <v-row>
+      <v-col cols="12" class="d-flex justify-center" >
+        <h1>Escoge la modalidad que prefieras</h1>
+      </v-col>
+    </v-row>
     <v-row wrap>
       <v-col  cols="12" class="d-flex justify-center align-center flex-wrap">
         <modalidadCard v-for="(modalidad,index) in modalidades" :key="index" :modalidad="modalidad"></modalidadCard>

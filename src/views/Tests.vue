@@ -1,5 +1,10 @@
 <template>
   <v-container fluid fill-height class="d-flex align-start">
+     <v-row>
+      <v-col cols="12" class="d-flex justify-center" >
+        <h1>Escoge un test</h1>
+      </v-col>
+    </v-row>
     <v-row wrap>
       <v-col  cols="12" class="d-flex justify-center align-start flex-wrap">
         <testCard v-for="(test,index) in tests" :key="index" :test="test"></testCard>

@@ -1,5 +1,4 @@
 <template>
-<ValidationObserver>
   <v-row fill-height>
     <v-col cols="12">
       <v-col>
@@ -36,7 +35,6 @@
     </v-row>
     
   </v-row>
-  </ValidationObserver>
 </template>
 
 <script>
