@@ -5,16 +5,17 @@
     <testLayout v-if="loaded" :pregunta="preguntaActual"></testLayout>
 
       </v-col>
-      <v-row>
-        <v-col cols="12">
+      <v-row class="d-flex justify-center">
+        <v-col cols="6">
             <v-btn @click="backPreguntaActual()" color="success">Pregunta anterior </v-btn>
 
       </v-col>
-      <v-col cols="12">
+      <v-col cols="6">
             <v-btn @click="nextPregunta()" v-if="actualPreguntaIndex+1 != totalPreguntas" color="success">Pregunta siguiente</v-btn>
             <v-btn @click="nextPregunta()" v-else color="success">Terminar test</v-btn>
 
       </v-col>
+
 
       </v-row>
           </v-row>

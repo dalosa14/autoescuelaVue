@@ -61,7 +61,7 @@
         <router-link to="/login">¿Ya tienes una cuenta?</router-link>
       </span>
     </v-col>
-    <v-col class="d-flex justify-center align-end" min-height="500px">
+    <v-col cols="12" class="d-flex justify-center align-end" min-height="500px">
       <v-btn class="d-flex" color="primary" @click="register" dark>registrarse</v-btn>
     </v-col>
     <v-row align="center" justify="center" class="mb-5" v-if="loading">
@@ -70,7 +70,7 @@
       </v-col>
     </v-row>
     <v-row align="center" justify="center" class="mb-5" v-if="errorStatus">
-      <v-col align="center" justify="center">
+      <v-col cols="12" align="center" justify="center">
         <span class="red--text">{{ error.text }}</span>
       </v-col>
     </v-row>
@@ -110,10 +110,10 @@ export default {
             loading: false,
 
       user: {
-        name: "",
-        email: '',
-        password: "",
-        password2: "",
+        name: "saul",
+        email: 'sagar5554@gmail.com',
+        password: "123123",
+        password2: "123123",
       },
     };
   },
@@ -122,6 +122,7 @@ export default {
             this.loading = true;
 
       let response = await this.$store.dispatch('register',this.user)
+      console.log(response)
       if (response.success == false) {
         this.error.active = true;
         this.error.text = response.msg;

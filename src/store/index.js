@@ -208,17 +208,19 @@ export default new Vuex.Store({
             }
         },
         async login(context, userCredential) {
+
             try {
                 let response = await Vue.axios.post("/api/login", userCredential);
                 if (!response.data.token)
-                    return { success: false, msg: "error al loguearse", errorCode: 3 };
+                    return { success: false, msg: "credenciales erroneas", errorCode: 3 };
                 Vue.$cookies.set("Authorization", `Bearer ${response.data.token}`);
                 await context.dispatch("getLoggedUser");
 
                 router.push("/seleccionPermiso");
                 return { success: true, msg: "logueado correctamente", errorCode: 0 };
             } catch (error) {
-                return { success: false, msg: "error ", errorCode: 5 };
+
+                return { success: false, msg: error.response.data.error || 'error al conectar con el servidor', errorCode: 3 };
             }
         },
         async selectModalidad(context, codigoModalidad) {
@@ -232,8 +234,10 @@ export default new Vuex.Store({
         async register(context, userCredential) {
             try {
                 let response = await Vue.axios.post("/api/register", userCredential);
-                if (!response.data.name)
-                    return { success: false, msg: "error al registrarse", errorCode: 2 };
+                if (!response.data.name) {
+
+                    return { success: false, msg: response.data.msg || 'error al conectar con el servidor', errorCode: 2 };
+                }
                 const user = {
                     email: userCredential.email,
                     password: userCredential.password,
@@ -241,7 +245,8 @@ export default new Vuex.Store({
                 context.dispatch("login", user);
                 return { success: true, msg: "registrado correctamente", errorCode: 0 };
             } catch (error) {
-                return { success: false, msg: "error ", errorCode: 5 };
+                console.log(error)
+                return { success: false, msg: error.response.data.error, errorCode: 3 };
             }
         },
         async getPermisos(context) {
