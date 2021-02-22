@@ -47,7 +47,7 @@
                           <ValidationProvider name="pass2" v-slot="v" vid="pass2">
 
       <v-text-field
-        label="Contraseña"
+        label="Repite contraseña"
         name="password"
         type="password"
         v-model="user.password2"
@@ -110,10 +110,10 @@ export default {
             loading: false,
 
       user: {
-        name: "saul",
-        email: 'sagar5554@gmail.com',
-        password: "123123",
-        password2: "123123",
+        name: "",
+        email: '',
+        password: "",
+        password2: "",
       },
     };
   },
